@@ -1,0 +1,13 @@
+
+.picker-container
+{
+  width: fit-content;
+  margin: auto;
+  margin-top: 3%;
+}
+
+.color-display
+{
+  width: 100px;
+  height: 100px;
+}
