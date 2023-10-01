@@ -1,11 +1,10 @@
 import './App.css';
-import ColorPicker from './components/ColorPicker';
-
+import ColorDisplay from './components/ColorDisplay';
 
 const App = () => {
   return (
     <>
-      <ColorPicker />
+      <ColorDisplay />
     </>
   )
 };
