@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { HexColorPicker,HexColorInput } from "react-colorful";
 import ColorSuggestion from './ColorSuggestion';
+import Navbar from './Navbar';
 
 function ColorDisplay() {
   const [color, setColor] = useState("#aabbcc");
@@ -67,19 +68,22 @@ const hslColor = rgbToHsl(r,g,b);
 const hslColorString = `${hslColor[0]} , ${hslColor[1]} , ${hslColor[2]}`;
 
   return (
-    <div className='main-color-container'>
-      <div className='picker-container'>
-        <HexColorPicker color={color} onChange={setColor} />
-        <HexColorInput color={color} onChange={setColor} />
-        <p className='inp-post-text'>Enter your color hex value</p>
-        <div className='color-box' style={col}>
+    <>
+      <Navbar/>
+      <div className='main-color-container'>
+        <div className='picker-container'>
+          <HexColorPicker color={color} onChange={setColor} />
+          <HexColorInput color={color} onChange={setColor} />
+          <p className='inp-post-text'>Enter your color hex value</p>
+          <div className='color-box' style={col}>
+          </div>
+          <p><strong>RGB </strong>: {rgbColor} <button className='copy-btn' onClick={()=>{copyToClipboard(rgbColor)}}>copy</button></p>
+          <p><strong>HEX </strong>: {color} <button className='copy-btn' onClick={()=>{copyToClipboard(color)}}>copy</button></p>
+          <p><strong>HSL </strong>: {hslColorString} <button className='copy-btn' onClick={()=>{copyToClipboard(hslColorString)}}>copy</button></p>
         </div>
-        <p><strong>RGB </strong>: {rgbColor} <button className='copy-btn' onClick={()=>{copyToClipboard(rgbColor)}}>copy</button></p>
-        <p><strong>HEX </strong>: {color} <button className='copy-btn' onClick={()=>{copyToClipboard(color)}}>copy</button></p>
-        <p><strong>HSL </strong>: {hslColorString} <button className='copy-btn' onClick={()=>{copyToClipboard(hslColorString)}}>copy</button></p>
+        <ColorSuggestion hslColor={hslColor} />
       </div>
-      <ColorSuggestion hslColor={hslColor} />
-    </div>
+    </>
   )
 }
 
