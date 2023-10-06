@@ -7,7 +7,7 @@ const Joi = require('joi');
 app.use(bodyParser.json());
 app.use(cors())
 
-const SigninSchema = Joi.object({
+const signinSchema = Joi.object({
   userName: Joi.string()
     .min(2)
     .max(50)
@@ -23,11 +23,24 @@ const SigninSchema = Joi.object({
     .required(),
 });
 
+const loginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string()
+    .min(5)
+    .max(17)
+    .pattern(
+      /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$/,
+      'Password Invalid'
+    )
+    .required(),
+});
+
+//Post Routes
+
 app.post('/signin', (req, res) => {
-  const { error } = SigninSchema.validate(req.body);
+  const { error } = signinSchema.validate(req.body);
 
   if (error) {
-    // If validation fails, send an error response
     res.status(400).json({ error: error.details[0].message });
   } else {
     console.log(req.body);
@@ -35,4 +48,16 @@ app.post('/signin', (req, res) => {
   }
 });
 
+app.post("/login",(req,res)=>{
+  const { error } = loginSchema.validate(req.body);
+  let loginStatus = false
+  if (error) {
+
+    res.status(400).json({ error: error.details[0].message ,status:loginStatus });
+  } else {
+    loginStatus = true
+    console.log(req.body);
+    res.status(200).json({ username:req.body.email,status:loginStatus });
+  }
+})
 app.listen(8000,()=> console.log("Server is listening on port : localhost:8000"))

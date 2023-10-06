@@ -12,9 +12,11 @@ async function sendSigninData(formValues, setSubmitting, setErrors) {
       if (error.response) {
         // Server responded with an error status (e.g., 400 Bad Request)
         setErrors({ serverError: error.response.data.message });
+        alert(error.response.data.error)
       } else {
         // Network error or other unexpected issues
         setErrors({ serverError: "An unexpected error occurred" });
+        alert("An unexpected error occurred")
       }
     } finally {
       setSubmitting(false);
@@ -56,16 +58,19 @@ const Signup = () => (
       {({ errors, touched }) => (
         <Form>
           <div className='form-field'>
+            <label>Username :</label>
             <Field name="userName" className='form-inp'/>
             {errors.userName && touched.userName ? (
               <div className='form-err-msg'>{errors.userName}</div>
             ) : null}
           </div>
           <div className='form-field'>
+            <label>Email :</label>
             <Field name="email" type="email" className='form-inp'/>
             {errors.email && touched.email ? <div className='form-err-msg'>{errors.email}</div> : null}
           </div>
           <div className='form-field'>
+            <label>Password :</label>
             <Field name="password" type="password" className='form-inp' />
             {errors.password && touched.password ? <div className='form-err-msg'>{errors.password}</div> : null}
           </div>

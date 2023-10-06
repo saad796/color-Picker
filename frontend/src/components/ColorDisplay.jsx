@@ -1,11 +1,23 @@
 import { useState } from 'react';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { HexColorPicker,HexColorInput } from "react-colorful";
 import ColorSuggestion from './ColorSuggestion';
 import Navbar from './Navbar';
 
 function ColorDisplay() {
   const [color, setColor] = useState("#aabbcc");
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { loginStatus, username } = location.state || {};
+  const [userDetails , setUserDetails] = useState({loginStatus, username})
   const col = {backgroundColor : color}
+
+  function clearUserData()
+  {
+    console.log("clearing");
+    navigate('.', { state: undefined })
+    setUserDetails({ loginStatus: undefined, username: undefined });
+  }
 
 function copyToClipboard(value) {
   navigator.clipboard.writeText(value);
@@ -69,7 +81,7 @@ const hslColorString = `${hslColor[0]} , ${hslColor[1]} , ${hslColor[2]}`;
 
   return (
     <>
-      <Navbar/>
+      <Navbar username={userDetails.username} loginStatus={userDetails.loginStatus} logout={clearUserData}/>
       <div className='main-color-container'>
         <div className='picker-container'>
           <HexColorPicker color={color} onChange={setColor} />
