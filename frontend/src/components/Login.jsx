@@ -19,8 +19,15 @@ const Login = (props) => {
     try {
         const response = await axios.post("http://localhost:8000/login", formValues);
         console.log(response.data);
-        const {username , status} = response.data;
-        navigate('/', {state:{username :username,loginStatus:status } ,replace: true });
+        const {username , status,id} = response.data;
+        navigate('/');
+        props.userData((prev)=>{
+          return {...prev,
+          loginStatus : status,
+          username : username,
+          userid : id
+        }
+        })
       } catch (error) {
         console.error(error);
         if (error.response) {

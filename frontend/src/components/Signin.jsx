@@ -1,31 +1,11 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import axios from 'axios';
 
-async function sendSigninData(formValues, setSubmitting, setErrors) {
-  try {
-      const response = await axios.post("http://localhost:8000/signin", formValues);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-      if (error.response) {
-        // Server responded with an error status (e.g., 400 Bad Request)
-        setErrors({ serverError: error.response.data.message });
-        alert(error.response.data.error)
-      } else {
-        // Network error or other unexpected issues
-        setErrors({ serverError: "An unexpected error occurred" });
-        alert("An unexpected error occurred")
-      }
-    } finally {
-      setSubmitting(false);
-    }
-};
-
-
 const SignupSchema = Yup.object().shape({
-  userName: Yup.string()
+  username: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
@@ -40,12 +20,43 @@ const SignupSchema = Yup.object().shape({
     .required('Required')
 });
 
-const Signup = () => (
+const Signup = (props) => {
+  const navigate = useNavigate();
+
+  async function sendSigninData(formValues, setSubmitting, setErrors) {
+    try {
+        const response = await axios.post("http://localhost:8000/signin", formValues);
+        const {username , status , id} = response.data;
+        props.userData((prev)=>{
+          return {...prev,
+            loginStatus : status,
+            username : username,
+            userid : id
+          }
+          })
+          navigate('/');
+      } catch (error) {
+        console.error(error);
+        if (error.response) {
+          // Server responded with an error status (e.g., 400 Bad Request)
+          setErrors({ serverError: error.response.data.message });
+          alert(error.response.data.error)
+        } else {
+          // Network error or other unexpected issues
+          setErrors({ serverError: "An unexpected error occurred" });
+          alert("An unexpected error occurred")
+        }
+      } finally {
+        setSubmitting(false);
+      }
+  };
+
+  return (
   <div className='form-container register-form-container'>
-    <h3>Signup</h3>
+    <h3>SignIn</h3>
     <Formik
       initialValues={{
-        userName: '',
+        username: '',
         email: '',
         password : ''
       }}
@@ -59,9 +70,9 @@ const Signup = () => (
         <Form>
           <div className='form-field'>
             <label>Username :</label>
-            <Field name="userName" className='form-inp'/>
-            {errors.userName && touched.userName ? (
-              <div className='form-err-msg'>{errors.userName}</div>
+            <Field name="username" className='form-inp'/>
+            {errors.username && touched.username ? (
+              <div className='form-err-msg'>{errors.username}</div>
             ) : null}
           </div>
           <div className='form-field'>
@@ -78,7 +89,7 @@ const Signup = () => (
         </Form>
       )}
     </Formik>
-  </div>
-);
+  </div>)
+};
 
 export default Signup

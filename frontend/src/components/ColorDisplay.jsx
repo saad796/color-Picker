@@ -1,23 +1,11 @@
 import { useState } from 'react';
-import { useLocation,useNavigate } from 'react-router-dom';
 import { HexColorPicker,HexColorInput } from "react-colorful";
 import ColorSuggestion from './ColorSuggestion';
-import Navbar from './Navbar';
+import NavElements from './NavElements';
 
-function ColorDisplay() {
+function ColorDisplay(props) {
   const [color, setColor] = useState("#aabbcc");
-  const navigate = useNavigate()
-  const location = useLocation()
-  const { loginStatus, username } = location.state || {};
-  const [userDetails , setUserDetails] = useState({loginStatus, username})
   const col = {backgroundColor : color}
-
-  function clearUserData()
-  {
-    console.log("clearing");
-    navigate('.', { state: undefined })
-    setUserDetails({ loginStatus: undefined, username: undefined });
-  }
 
 function copyToClipboard(value) {
   navigator.clipboard.writeText(value);
@@ -81,7 +69,7 @@ const hslColorString = `${hslColor[0]} , ${hslColor[1]} , ${hslColor[2]}`;
 
   return (
     <>
-      <Navbar username={userDetails.username} loginStatus={userDetails.loginStatus} logout={clearUserData}/>
+      <NavElements/>
       <div className='main-color-container'>
         <div className='picker-container'>
           <HexColorPicker color={color} onChange={setColor} />
@@ -93,7 +81,7 @@ const hslColorString = `${hslColor[0]} , ${hslColor[1]} , ${hslColor[2]}`;
           <p><strong>HEX </strong>: {color} <button className='copy-btn' onClick={()=>{copyToClipboard(color)}}>copy</button></p>
           <p><strong>HSL </strong>: {hslColorString} <button className='copy-btn' onClick={()=>{copyToClipboard(hslColorString)}}>copy</button></p>
         </div>
-        <ColorSuggestion hslColor={hslColor} />
+        <ColorSuggestion hslColor={hslColor} origCol={color} userData={props.userData}/>
       </div>
     </>
   )

@@ -2,6 +2,7 @@
 {
   
   display: flex;
+  flex-wrap: wrap;
   justify-content: start;
   gap: 5px;
 }
@@ -79,6 +80,27 @@
   align-items: center;
   padding: 0 1em;
 }
+
+.nav-elements
+{
+  display: flex;
+  justify-content:space-evenly;
+  padding-top: 30px;
+  padding-bottom: 10px;
+}
+.nav-elements a{
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+  transition: .3s;
+}
+.nav-elements a:hover{
+  color:rgb(176, 0, 53);
+}
+.add-bottom-bar
+{
+  border-bottom: 2px solid black;
+}
 .logo
 {
   margin: .5em 0;
@@ -133,7 +155,6 @@
 
 .form-container
 {
-  
   padding:1em 5vw;
 }
 

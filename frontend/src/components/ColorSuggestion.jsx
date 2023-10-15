@@ -1,5 +1,6 @@
 import React from 'react'
 import ColorSuggestionTab from './ColorSuggestionTab';
+import ColorPalete from './ColorPalete';
 
 function ColorSuggestion(props) {
 
@@ -89,10 +90,10 @@ function ColorSuggestion(props) {
       }
       const colorCombinations = suggestColorCombinations(props.hslColor);
       
-
   return (
     <div className='suggestion-container'>
         <h2>Suggestions</h2>
+        <ColorPalete title="pallete" suggestedColor={colorCombinations} origCol={props.origCol} userData={props.userData}/>
         <ColorSuggestionTab title="complementary" suggestedColor={colorCombinations.complementary} />
         <ColorSuggestionTab title="analogous" suggestedColor={colorCombinations.analogous} />
         <ColorSuggestionTab title="triadic" suggestedColor={colorCombinations.triadic} />
